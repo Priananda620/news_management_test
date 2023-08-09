@@ -1,53 +1,54 @@
 <?php
-
-// app\Repositories\EloquentNewsRepository.php
-
 namespace App\Repositories;
 
 use App\Models\News;
+use Illuminate\Support\Facades\Storage;
 
 class EloquentNewsRepository implements NewsRepositoryInterface
 {
-    protected $newsModel;
-
-    public function __construct(News $newsModel)
+    public function getAllNews($perPage, $page)
     {
-        $this->newsModel = $newsModel;
+        return News::paginate($perPage, ['*'], 'page', $page);
     }
 
-    // Implement the methods defined in the NewsRepositoryInterface
-    public function all()
+    public function getNewsById($id)
     {
-        return $this->newsModel->all();
+        return News::findOrFail($id);
     }
 
-    public function find($id)
+    public function createNews(array $data)
     {
-        return $this->newsModel->find($id);
+        return News::create($data);
     }
 
-    public function create(array $data)
+    public function updateNews($id, array $data)
     {
-        return $this->newsModel->create($data);
+        $news = News::findOrFail($id);
+
+        if (isset($data['attached_img'])) {
+            // Delete old image if it exists
+            if ($news->attached_img) {
+                Storage::disk('public')->delete($news->attached_img);
+            }
+
+            // Store the new image
+            $imagePath = $data['attached_img']->store('news_images', 'public');
+            $data['attached_img'] = $imagePath;
+        }
+
+        $news->update($data);
+
+        return $news;
     }
 
-    public function update($id, array $data)
+    public function deleteNews($id)
     {
-        // ...
+        $news = News::findOrFail($id);
+        $news->delete();
     }
 
-    public function delete($id)
+    public function getNewsDetails($news_id)
     {
-        // ...
+        return News::with('comment')->findOrFail($news_id);
     }
-
-    // public function getNewsByCategory($category)
-    // {
-    //     return $this->newsModel->where('category', $category)->get();
-    // }
-
-    // public function getLatestNews($limit)
-    // {
-    //     return $this->newsModel->orderBy('created_at', 'desc')->limit($limit)->get();
-    // }
 }

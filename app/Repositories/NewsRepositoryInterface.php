@@ -4,17 +4,11 @@ namespace App\Repositories;
 
 interface NewsRepositoryInterface
 {
-    public function all();
-
-    public function find($id);
-
-    public function create(array $data);
-
-    public function update($id, array $data);
-
-    public function delete($id);
-
-    // public function getNewsByCategory($category);
-
-    // public function getLatestNews($limit);
+    public function getAllNews($perPage, $page);
+    public function getNewsById($id);
+    public function createNews(array $data);
+    public function updateNews($id, array $data);
+    public function deleteNews($id);
+    public function getNewsDetails($news_id);
 }
+
