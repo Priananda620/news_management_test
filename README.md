@@ -76,7 +76,32 @@ Follow these steps to set up and run the project:
     php artisan test
     ```
 
-You have successfully set up the project! You can now create, update, and retrieve news, manage comments, and interact with the API endpoints.
+## Setting Up Redis Queue
+
+1. Install Redis on your system.
+
+2. Configure `.env` to use Redis as the queue driver:
+
+```plaintext
+QUEUE_CONNECTION=redis
+```
+
+3. Set the Redis connection information in `.env`:
+
+```plaintext
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+```
+
+4. Start the Laravel queue worker to process jobs using Redis:
+
+```bash
+php artisan queue:work
+```
+
+Make sure to replace connection information as needed based on Redis.
+```
 
 ## API Documentation
 
