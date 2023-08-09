@@ -160,5 +160,6 @@ Please ensure that you include the necessary headers, parameters, and payloads w
 - Comment on news articles.
 - Retrieve news details along with associated comments.
 - Pagination support for news articles and comments.
+- Redis queueing for comment creation.
 
 ---
