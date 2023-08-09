@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('title', 255)->unique();
-            $table->longText('news_synopsis');
+            $table->longText('content');
             $table->string('attached_img', 255)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

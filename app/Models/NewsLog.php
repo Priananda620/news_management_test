@@ -5,26 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class NewsLog extends Model
 {
     use HasFactory;
-    public $timestamps=true;
 
+    public $timestamps=true;
+    
     protected $fillable = [
+        'action',
         'news_id',
-        'user_id',
-        'comment'
+        'title',
+        'content',
     ];
 
     protected $casts = [
-        'comment' => 'string',
+        'action' => 'string',
         'news_id' => 'integer',
-        'user_id' => 'integer'
+        'title' => 'string',
+        'content' => 'string'
     ];
-
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
 
     public function news(){
         return $this->belongsTo(News::class);
