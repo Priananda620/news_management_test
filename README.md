@@ -15,13 +15,13 @@ Follow these steps to set up and run the project:
 1. **Clone the Repository**: Clone this repository to your local machine using the following command:
 
     ```sh
-    git clone https://github.com/your-username/your-repo.git
+    git clone https://github.com/Priananda620/news_management_test
     ```
 
 2. **Navigate to Project Directory**: Change your current working directory to the project folder:
 
     ```sh
-    cd your-repo
+    cd news_management_test
     ```
 
 3. **Install Dependencies**: Install the required PHP dependencies using Composer:
@@ -50,10 +50,10 @@ Follow these steps to set up and run the project:
     php artisan passport:keys
     ```
 
-7. **Migrate Database**: Run the database migrations to create tables:
+7. **Migrate Database**: Run the database migrations to create tables and the seeders (user and role):
 
     ```sh
-    php artisan migrate
+    php artisan migrate:fresh --seed
     ```
 
 8. **Create Passport Personal Access Client**: Create a personal access client for Laravel Passport:
@@ -80,7 +80,79 @@ You have successfully set up the project! You can now create, update, and retrie
 
 ## API Documentation
 
-For detailed information on how to use the API endpoints, refer to the [API Documentation](doc/api-documentation.md).
+### Authentication
+
+To use the API endpoints that require authentication, you need to authenticate your requests using the provided `login` endpoint. After successful authentication, you will receive an access token that should be included in the headers of subsequent requests.
+
+- **Endpoint**: `/login`
+- **Method**: POST
+- **Parameters**:
+  - `email`: User's email
+  - `password`: User's password
+
+#### Example:
+
+```http
+POST /api/login HTTP/1.1
+Host: your-app-url
+Content-Type: application/json
+
+{
+  "email": "prianandaazhar@yopmail.com",
+  "password": "password123"
+}
+
+### Authenticated Routes
+
+Once you have obtained the access token, you can access the following routes that require authentication:
+
+#### Get User Details
+
+- **Endpoint:** `/getUser`
+- **Method:** `GET`
+
+#### Get User Role
+
+- **Endpoint:** `/getUserRole`
+- **Method:** `GET`
+
+#### Post Comment (Requires User Role: 2)
+
+- **Endpoint:** `/comment/post`
+- **Method:** `POST`
+- **Middleware:** `checkUserRole:2`
+
+#### Get All News
+
+- **Endpoint:** `/news`
+- **Method:** `GET`
+
+#### Get News Details with Comments
+
+- **Endpoint:** `/news/get-news-details/{news_id}`
+- **Method:** `GET`
+
+#### Create News (Requires User Role: 1)
+
+- **Endpoint:** `/news/post`
+- **Method:** `POST`
+- **Middleware:** `checkUserRole:1`
+
+#### Update News (Requires User Role: 1)
+
+- **Endpoint:** `/news/update/{id}`
+- **Method:** `POST` (Due to form data with image)
+- **Middleware:** `checkUserRole:1`
+
+#### Delete News (Requires User Role: 1)
+
+- **Endpoint:** `/news/delete/{id}`
+- **Method:** `DELETE`
+- **Middleware:** `checkUserRole:1`
+
+Please ensure that you include the necessary headers, parameters, and payloads when making requests to these endpoints.
+
+
 
 ## Features
 
